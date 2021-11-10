@@ -23,6 +23,10 @@ public class UserDetails {
         this.lastName = lastName;
     }
 
+    public UserDetails(){
+        super();
+    }
+
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -40,15 +44,15 @@ public class UserDetails {
     }
 
     public int getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public String getUserName() {
-        return userName;
+        return this.userName;
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public String getLastName() {
