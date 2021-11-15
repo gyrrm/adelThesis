@@ -1,5 +1,6 @@
 package com.adel.thesis.adelthesis.utility;
 
+import com.adel.thesis.adelthesis.model.request.LoginRequest;
 import com.adel.thesis.adelthesis.model.request.RegistrationRequest;
 import com.adel.thesis.adelthesis.constants.ErrorCodes;
 import org.springframework.stereotype.Component;
@@ -48,5 +49,24 @@ public class SchemaValidationUtility {
                 return statusOfUserDetails;
             }
         }
+    }
+
+    public int validateLoginRequest(LoginRequest body) {
+
+        int statusOfDetails = 200;
+
+        if(body != null) {
+            if(body.getLoginDetails() != null) {
+                if(body.getLoginDetails().getUserName().isEmpty()) {
+                    statusOfDetails = Integer.parseInt(ErrorCodes.INVALID_FIRST_OR_LAST_NAME_OR_USERNAME);
+                } else {
+                    if(body.getLoginDetails().getPassword().isEmpty()) {
+                        statusOfDetails = Integer.parseInt(ErrorCodes.INVALID_PASSWORD_IN_SCHEMA);
+                    }
+                }
+            }
+        }
+
+        return statusOfDetails;
     }
 }
