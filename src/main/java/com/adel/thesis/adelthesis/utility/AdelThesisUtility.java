@@ -1,13 +1,22 @@
 package com.adel.thesis.adelthesis.utility;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AdelThesisUtility {
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     public int generateUserId(){
 
@@ -22,7 +31,7 @@ public class AdelThesisUtility {
                     .put("service", service).toString();
 
     }
-
+//
     public HttpHeaders createReponseHeaders(String uuid, String sourceapp) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -43,5 +52,19 @@ public class AdelThesisUtility {
         }
 
         return json;
+    }
+
+    public String createLoginResponseBody(String status, String message, String service, JSONObject profileFromDatabase) {
+
+        Map obj = new LinkedHashMap();
+
+        obj.put("status", status);
+        obj.put("message", message);
+        obj.put("service", service);
+        obj.put("profile", profileFromDatabase.getJSONObject("profile").getJSONObject("details"));
+
+        String stringObject = new JSONObject(obj).toString();
+
+        return stringObject;
     }
 }

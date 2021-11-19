@@ -12,5 +12,10 @@ public final class ErrorCodes {
 
     //Not error codes
     public static final String SUCCESSFUL_REGISTRATION = "1100";
+    public static final String SUCCESSFUL_LOGIN = "1200";
+
+    //Real error codes
+    public static final String INVALID_PASSWORD_AT_LOGIN = "4103";
+    public static final String INVALID_USERNAME_AT_LOGIN = "4101";
 
 }

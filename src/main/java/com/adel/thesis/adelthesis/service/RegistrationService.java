@@ -2,6 +2,7 @@ package com.adel.thesis.adelthesis.service;
 
 import java.io.IOException;
 
+import com.adel.thesis.adelthesis.constants.ErrorCodes;
 import com.adel.thesis.adelthesis.model.request.RegistrationRequest;
 import com.adel.thesis.adelthesis.service.dao.DaoOperations;
 import com.adel.thesis.adelthesis.utility.AdelThesisUtility;
@@ -63,7 +64,7 @@ public class RegistrationService {
         daoOperations.writeToJson(adelThesisUtility.stringToJson(body));
 
         return new ResponseEntity<String>(
-            adelThesisUtility.createResponseBody("1100", "Registration was successful", "RegistrationService"),
+            adelThesisUtility.createResponseBody(ErrorCodes.SUCCESSFUL_REGISTRATION, "Registration was successful", "RegistrationService"),
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.OK);
     }
 }
