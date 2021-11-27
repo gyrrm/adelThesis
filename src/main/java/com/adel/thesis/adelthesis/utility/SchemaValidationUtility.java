@@ -70,4 +70,33 @@ public class SchemaValidationUtility {
         }
         return statusOfDetails;
     }
+
+    public int validateActivationRequest(JSONObject body) {
+
+        int statusOfDetails = 200;
+        int statusOfSecurity = 200;
+
+        if(body != null) {
+            if(body.getJSONObject("details") != null) {
+                if(body.getJSONObject("details").getString("username").isEmpty()) {
+                    statusOfDetails = Integer.parseInt(ErrorCodes.INVALID_FIRST_OR_LAST_NAME_OR_USERNAME);
+                }
+            }
+            if(body.getJSONObject("security") != null) {
+                if(body.getJSONObject("security").getString("activationCode") == null ||
+                   body.getJSONObject("security").getString("activationCode").isEmpty()) {
+                    statusOfSecurity = Integer.parseInt(ErrorCodes.INVALID_ACTIVATION_CODE_IN_SCHEMA);
+                }
+            }
+        }
+        if(statusOfSecurity == 200  && statusOfDetails == 200) {
+            return 200;
+        } else {
+            if(statusOfSecurity != 200) {
+                return statusOfSecurity;
+            } else {
+                return statusOfDetails;
+            }
+        }
+    }
 }

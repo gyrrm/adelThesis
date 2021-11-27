@@ -67,4 +67,16 @@ public class AdelThesisUtility {
 
         return stringObject;
     }
+
+    public JSONObject modifyActiveInd(JSONObject profileFromDatabase) {
+
+        profileFromDatabase.getJSONObject("profile").getJSONObject("security").remove("acivationCode");
+        profileFromDatabase.getJSONObject("profile").getJSONObject("security").remove("activeInd");
+
+        profileFromDatabase.getJSONObject("profile").getJSONObject("security").put("acivationCode", "");
+        profileFromDatabase.getJSONObject("profile").getJSONObject("security").put("activeInd", "A");
+
+        return profileFromDatabase;
+
+    }
 }

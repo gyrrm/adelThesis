@@ -32,4 +32,28 @@ public class LoginUtility {
 
         return statusCodeOfUsernameCheck;
     }
+
+    public int checkActiveInd(JSONObject profileFromDatabase) {
+
+        int statusCodeOfActiveIndCheck = 200;
+
+        if (!profileFromDatabase.getJSONObject("profile").getJSONObject("security").getString("activeInd").equals("A")) {
+
+                    statusCodeOfActiveIndCheck = 500;
+                }
+
+        return statusCodeOfActiveIndCheck;
+    }
+
+    public int checkActiveIndIfActive(JSONObject profileFromDatabase) {
+
+        int statusCodeOfActiveIndCheck = 200;
+
+        if (profileFromDatabase.getJSONObject("profile").getJSONObject("security").getString("activeInd").equals("A")) {
+
+                    statusCodeOfActiveIndCheck = 500;
+                }
+
+        return statusCodeOfActiveIndCheck;
+    }
 }

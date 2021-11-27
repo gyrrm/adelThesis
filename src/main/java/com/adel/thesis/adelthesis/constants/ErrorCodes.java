@@ -13,9 +13,12 @@ public final class ErrorCodes {
     //Not error codes
     public static final String SUCCESSFUL_REGISTRATION = "1100";
     public static final String SUCCESSFUL_LOGIN = "1200";
+    public static final String SUCCESSFUL_ACTIVATION = "1300";
 
     //Real error codes
     public static final String INVALID_PASSWORD_AT_LOGIN = "4103";
     public static final String INVALID_USERNAME_AT_LOGIN = "4101";
+    public static final String INVALID_ACTIVEIND_AT_LOGIN = "4102";
+    public static final String USER_IS_ALREADY_ACTIVE = "4200";
 
 }

@@ -5,7 +5,6 @@ import com.adel.thesis.adelthesis.service.dao.DaoOperations;
 import com.adel.thesis.adelthesis.utility.AdelThesisUtility;
 import com.adel.thesis.adelthesis.utility.LoginUtility;
 import com.adel.thesis.adelthesis.utility.SchemaValidationUtility;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginService {
-
+public class ActivationService {
 
     @Autowired
     public HeaderValidationService headerValidationService;
@@ -27,15 +25,12 @@ public class LoginService {
     public SchemaValidationUtility schemaValidationUtility;
 
     @Autowired
-    public LoginUtility loginUtility;
-
-    @Autowired
     public DaoOperations daoOperations;
 
     @Autowired
-    public ObjectMapper mapper;
+    public LoginUtility loginUtility;
 
-    public ResponseEntity<String> login(String body, String uuid, String sourceapp) {
+    public ResponseEntity<String> activation(String body, String uuid, String sourceapp) {
 
         int headerValidationStatusCode = headerValidationService.headerValidation(uuid, sourceapp);
         int schemaValidationStatusCode = 200;
@@ -48,7 +43,7 @@ public class LoginService {
 
         JSONObject requestAsJson = new JSONObject(body);
 
-        schemaValidationStatusCode = schemaValidationUtility.validateLoginRequest(requestAsJson);
+        schemaValidationStatusCode = schemaValidationUtility.validateActivationRequest(requestAsJson);
 
         if(schemaValidationStatusCode != 200) {
             return new ResponseEntity<String>(
@@ -68,33 +63,26 @@ public class LoginService {
 
             return new ResponseEntity<String>(
             adelThesisUtility.createResponseBody(
-                ErrorCodes.INVALID_USERNAME_AT_LOGIN, "User was not found", "LoginService"),
+                ErrorCodes.INVALID_USERNAME_AT_LOGIN, "User was not found", "ActivationService"),
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
-        int statusFromActiveIndCheck = loginUtility.checkActiveInd(profileFromDatabaseAsJSON);
+        int statusFromActiveIndCheck = loginUtility.checkActiveIndIfActive(profileFromDatabaseAsJSON);
 
         if(statusFromActiveIndCheck != 200) {
 
             return new ResponseEntity<String>(
             adelThesisUtility.createResponseBody(
-                ErrorCodes.INVALID_ACTIVEIND_AT_LOGIN, "The user is not active", "LoginService"),
+                ErrorCodes.USER_IS_ALREADY_ACTIVE, "The user is already active", "ActivationService"),
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
-        int statusCodeOfPasswordCheck = loginUtility.checkPasswordMatch(requestAsJson, profileFromDatabaseAsJSON);
+        JSONObject activatedProfileAsJson = adelThesisUtility.modifyActiveInd(profileFromDatabaseAsJSON);
 
-        if(statusCodeOfPasswordCheck != 200) {
-
-            return new ResponseEntity<String>(
-            adelThesisUtility.createResponseBody(
-                ErrorCodes.INVALID_PASSWORD_AT_LOGIN, "Login was not successful", "LoginService"),
-            adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
-        }
+        daoOperations.writeToJson(adelThesisUtility.stringToJson(activatedProfileAsJson.toString()));
 
         return new ResponseEntity<String>(
-            adelThesisUtility.createLoginResponseBody(
-                ErrorCodes.SUCCESSFUL_LOGIN, "Registration was successful", "RegistrationService", profileFromDatabaseAsJSON),
+            adelThesisUtility.createResponseBody(ErrorCodes.SUCCESSFUL_ACTIVATION, "Activation was successful", "ActivationService"),
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.OK);
     }
 
