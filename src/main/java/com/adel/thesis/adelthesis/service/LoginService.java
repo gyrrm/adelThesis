@@ -91,5 +91,4 @@ public class LoginService {
                 ErrorCodes.SUCCESSFUL_LOGIN, "Login was successful", "LoginService", profileFromDatabase),
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.OK);
     }
-
 }
