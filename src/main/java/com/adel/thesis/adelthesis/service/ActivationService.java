@@ -55,7 +55,7 @@ public class ActivationService {
                 adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
-        org.json.JSONObject profileFromDatabase = daoOperations.readFromJsonForActivation(requestAsJson);
+        org.json.JSONObject profileFromDatabase = daoOperations.readFromJsonForLogin(requestAsJson);
 
         String profileFromDatabaseAsString = profileFromDatabase.toString();
 
@@ -83,7 +83,7 @@ public class ActivationService {
 
         JSONObject activatedProfileAsJson = adelThesisUtility.modifyActiveInd(profileFromDatabaseAsJSON);
 
-        daoOperations.writeToJson(adelThesisUtility.stringToJson(activatedProfileAsJson.toString()));
+        daoOperations.writeToJsonAtActivation(adelThesisUtility.stringToJson(activatedProfileAsJson.toString()));
 
         return new ResponseEntity<String>(
             adelThesisUtility.createResponseBody(ErrorCodes.SUCCESSFUL_ACTIVATION, "Activation was successful", "ActivationService"),

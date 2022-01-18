@@ -88,7 +88,7 @@ public class LoginService {
 
         return new ResponseEntity<String>(
             adelThesisUtility.createLoginResponseBody(
-                ErrorCodes.SUCCESSFUL_LOGIN, "Registration was successful", "RegistrationService", profileFromDatabase),
+                ErrorCodes.SUCCESSFUL_LOGIN, "Login was successful", "LoginService", profileFromDatabase),
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.OK);
     }
 

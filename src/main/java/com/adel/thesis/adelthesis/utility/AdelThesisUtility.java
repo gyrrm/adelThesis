@@ -43,15 +43,9 @@ public class AdelThesisUtility {
         return headers;
     }
 
-    public org.json.simple.JSONObject stringToJson(String body) {
+    public org.json.JSONObject stringToJson(String body) {
 
-        org.json.simple.JSONObject json = new org.json.simple.JSONObject();
-
-        JSONParser parser = new JSONParser(); try {
-            json = (org.json.simple.JSONObject) parser. parse(body);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        org.json.JSONObject json = new JSONObject(body);
 
         return json;
     }
@@ -72,10 +66,10 @@ public class AdelThesisUtility {
 
     public JSONObject modifyActiveInd(JSONObject profileFromDatabase) {
 
-        profileFromDatabase.getJSONObject("profile").getJSONObject("security").remove("acivationCode");
+        profileFromDatabase.getJSONObject("profile").getJSONObject("security").remove("activationCode");
         profileFromDatabase.getJSONObject("profile").getJSONObject("security").remove("activeInd");
 
-        profileFromDatabase.getJSONObject("profile").getJSONObject("security").put("acivationCode", "");
+        profileFromDatabase.getJSONObject("profile").getJSONObject("security").put("activationCode", "");
         profileFromDatabase.getJSONObject("profile").getJSONObject("security").put("activeInd", "A");
 
         return profileFromDatabase;

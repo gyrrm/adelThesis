@@ -23,7 +23,7 @@ public class DaoOperations {
     @Autowired
     AdelThesisUtility adelThesisUtility;
 
-    public int writeToJson(JSONObject requestBodyAsJson) throws IOException, ParseException {
+    public int writeToJson(org.json.JSONObject requestBodyAsJson) throws IOException, ParseException {
 
         int statusCode;
 
@@ -46,16 +46,66 @@ public class DaoOperations {
             profilesArrayFromFile = new JSONArray();
         }
 
-        System.out.println(profilesArrayFromFile.toString());
-
-        //String arrayAsString = jsonObject.get("profiles").toString();
-
         if(databaseJson.exists() && databaseJson.isFile()) {
-            System.out.println("MIAFASZ");
             databaseJson.delete();
         }
 
         databaseJson.createNewFile();
+
+        try {
+
+            BufferedWriter out = new BufferedWriter(new FileWriter("database.json", false));
+
+            profilesArrayFromFile.put(requestBodyAsJson);
+
+            out.write(profilesArrayFromFile.toString());
+            out.close();
+            statusCode = 200;
+        } catch (IOException e) {
+            statusCode = 500;
+            e.printStackTrace();
+        }
+
+        return statusCode;
+    }
+
+    public int writeToJsonAtActivation(org.json.JSONObject requestBodyAsJson) throws IOException, ParseException {
+
+        int statusCode;
+
+        JSONParser parser = new JSONParser();
+
+        JSONArray profilesArrayFromFile = new JSONArray();
+
+        File databaseJson = new File("database.json");
+
+        if(new File("database.json").length() != 0) {
+
+            Object obj = parser.parse(new FileReader("database.json"));
+            String jsonObject = obj.toString();
+
+            if(!jsonObject.isEmpty() && jsonObject != null) {
+
+                profilesArrayFromFile = new JSONArray(jsonObject);
+            }
+        } else {
+            profilesArrayFromFile = new JSONArray();
+        }
+
+        if(databaseJson.exists() && databaseJson.isFile()) {
+            databaseJson.delete();
+        }
+
+        databaseJson.createNewFile();
+
+        for(int i = 0; i < profilesArrayFromFile.length(); i++) {
+
+            if(profilesArrayFromFile.getJSONObject(i).getJSONObject("profile").getJSONObject("details").getString("userName")
+            .equals(requestBodyAsJson.getJSONObject("profile").getJSONObject("details").getString("userName"))) {
+
+                profilesArrayFromFile.remove(i);
+            }
+        }
 
         try {
 
