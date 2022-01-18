@@ -1,8 +1,13 @@
 package com.adel.thesis.adelthesis.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import com.adel.thesis.adelthesis.service.ActivationService;
 import com.adel.thesis.adelthesis.service.LoginService;
 import com.adel.thesis.adelthesis.service.RegistrationService;
+
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +33,7 @@ public class AdelThesisController {
     public ResponseEntity<String> registration(
                           @RequestHeader(value = "uuid", required = false) final String uuid,
                           @RequestHeader(value = "sourceapp", required = false) final String sourceapp,
-                          @RequestBody(required = false) String body) {
+                          @RequestBody(required = false) String body) throws IOException, ParseException {
 
         return registrationService.registration(body, uuid, sourceapp);
     }
@@ -46,7 +51,7 @@ public class AdelThesisController {
     public ResponseEntity<String> activation(
                           @RequestHeader(value = "uuid", required = false) final String uuid,
                           @RequestHeader(value = "sourceapp", required = false) final String sourceapp,
-                          @RequestBody(required = false) String body) {
+                          @RequestBody(required = false) String body) throws IOException, ParseException {
 
         return activationService.activation(body, uuid, sourceapp);
     }

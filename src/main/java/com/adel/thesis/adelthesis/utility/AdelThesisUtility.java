@@ -3,8 +3,10 @@ package com.adel.thesis.adelthesis.utility;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.adel.thesis.adelthesis.model.request.RegistrationRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -78,5 +80,21 @@ public class AdelThesisUtility {
 
         return profileFromDatabase;
 
+    }
+
+    public JSONObject getUserFromJSONArrayForRegistration(JSONArray array, RegistrationRequest request) {
+
+        JSONObject user = new JSONObject();
+
+        for(int i = 0; i < array.length(); i++) {
+
+
+            String userNameFromDatabase = array.getJSONObject(i).getJSONObject("profile").getJSONObject("details").getString("userName");
+
+                if(userNameFromDatabase.equals(request.getUserProfile().getUserDetails().getUserName())) {
+                    user = array.getJSONObject(i);
+                }
+        }
+            return user;
     }
 }

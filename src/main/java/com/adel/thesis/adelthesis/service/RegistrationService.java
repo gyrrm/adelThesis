@@ -1,5 +1,6 @@
 package com.adel.thesis.adelthesis.service;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.adel.thesis.adelthesis.constants.ErrorCodes;
@@ -9,6 +10,8 @@ import com.adel.thesis.adelthesis.utility.AdelThesisUtility;
 import com.adel.thesis.adelthesis.utility.SchemaValidationUtility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +35,7 @@ public class RegistrationService {
     @Autowired
     public ObjectMapper mapper;
 
-    public ResponseEntity<String> registration(String body, String uuid, String sourceapp) {
+    public ResponseEntity<String> registration(String body, String uuid, String sourceapp) throws IOException, ParseException {
 
         int headerValidationStatusCode = headerValidationService.headerValidation(uuid, sourceapp);
         int schemaValidationStatusCode = 200;
@@ -60,6 +63,14 @@ public class RegistrationService {
                 adelThesisUtility.createResponseBody(String.valueOf(schemaValidationStatusCode), "SchemaValidationException", "SchemaValidationUtility"),
                 adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
+
+        System.out.println("HAHA" + daoOperations.readFromJsonForRegistration(registrationRequest).toString());
+
+        if(!daoOperations.readFromJsonForRegistration(registrationRequest).toString().equals("{}")) {
+            return new ResponseEntity<String>(
+            adelThesisUtility.createResponseBody(ErrorCodes.USER_IS_ALREADY_REGISTERED, "Registration was not successful", "RegistrationService"),
+            adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
+    }
 
         daoOperations.writeToJson(adelThesisUtility.stringToJson(body));
 

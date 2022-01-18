@@ -1,5 +1,8 @@
 package com.adel.thesis.adelthesis.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import com.adel.thesis.adelthesis.constants.ErrorCodes;
 import com.adel.thesis.adelthesis.service.dao.DaoOperations;
 import com.adel.thesis.adelthesis.utility.AdelThesisUtility;
@@ -7,6 +10,7 @@ import com.adel.thesis.adelthesis.utility.LoginUtility;
 import com.adel.thesis.adelthesis.utility.SchemaValidationUtility;
 
 import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +34,7 @@ public class ActivationService {
     @Autowired
     public LoginUtility loginUtility;
 
-    public ResponseEntity<String> activation(String body, String uuid, String sourceapp) {
+    public ResponseEntity<String> activation(String body, String uuid, String sourceapp) throws IOException, ParseException {
 
         int headerValidationStatusCode = headerValidationService.headerValidation(uuid, sourceapp);
         int schemaValidationStatusCode = 200;
@@ -51,9 +55,9 @@ public class ActivationService {
                 adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
-        org.json.simple.JSONObject profileFromDatabase = daoOperations.readFromJson();
+        org.json.JSONObject profileFromDatabase = daoOperations.readFromJsonForActivation(requestAsJson);
 
-        String profileFromDatabaseAsString = profileFromDatabase.toJSONString();
+        String profileFromDatabaseAsString = profileFromDatabase.toString();
 
         JSONObject profileFromDatabaseAsJSON = new JSONObject(profileFromDatabaseAsString);
 

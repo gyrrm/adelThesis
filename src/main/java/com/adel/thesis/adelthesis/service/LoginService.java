@@ -56,9 +56,9 @@ public class LoginService {
                 adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
-        org.json.simple.JSONObject profileFromDatabase = daoOperations.readFromJson();
+        org.json.JSONObject profileFromDatabase = daoOperations.readFromJsonForLogin(requestAsJson);
 
-        String profileFromDatabaseAsString = profileFromDatabase.toJSONString();
+        String profileFromDatabaseAsString = profileFromDatabase.toString();
 
         JSONObject profileFromDatabaseAsJSON = new JSONObject(profileFromDatabaseAsString);
 
