@@ -97,4 +97,20 @@ public class AdelThesisUtility {
         }
             return user;
     }
+
+    public JSONObject getUserFromJSONArrayForLogin(JSONArray array, JSONObject request) {
+
+        JSONObject user = new JSONObject();
+
+        for(int i = 0; i < array.length(); i++) {
+
+
+            String userNameFromDatabase = array.getJSONObject(i).getJSONObject("profile").getJSONObject("details").getString("userName");
+
+                if(userNameFromDatabase.equals(request.getJSONObject("details").getString("username"))) {
+                    user = array.getJSONObject(i);
+                }
+        }
+            return user;
+    }
 }

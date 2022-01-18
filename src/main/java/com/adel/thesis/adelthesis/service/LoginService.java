@@ -58,13 +58,7 @@ public class LoginService {
 
         org.json.JSONObject profileFromDatabase = daoOperations.readFromJsonForLogin(requestAsJson);
 
-        String profileFromDatabaseAsString = profileFromDatabase.toString();
-
-        JSONObject profileFromDatabaseAsJSON = new JSONObject(profileFromDatabaseAsString);
-
-        int statusCodeOfUsernameCheck = loginUtility.checkUserNameMatch(requestAsJson, profileFromDatabaseAsJSON);
-
-        if(statusCodeOfUsernameCheck != 200) {
+        if(profileFromDatabase.toString().equals("{}")) {
 
             return new ResponseEntity<String>(
             adelThesisUtility.createResponseBody(
@@ -72,17 +66,7 @@ public class LoginService {
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
-        int statusFromActiveIndCheck = loginUtility.checkActiveInd(profileFromDatabaseAsJSON);
-
-        if(statusFromActiveIndCheck != 200) {
-
-            return new ResponseEntity<String>(
-            adelThesisUtility.createResponseBody(
-                ErrorCodes.INVALID_ACTIVEIND_AT_LOGIN, "The user is not active", "LoginService"),
-            adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
-        }
-
-        int statusCodeOfPasswordCheck = loginUtility.checkPasswordMatch(requestAsJson, profileFromDatabaseAsJSON);
+        int statusCodeOfPasswordCheck = loginUtility.checkPasswordMatch(requestAsJson, profileFromDatabase);
 
         if(statusCodeOfPasswordCheck != 200) {
 
@@ -92,9 +76,19 @@ public class LoginService {
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
+        int statusFromActiveIndCheck = loginUtility.checkActiveInd(profileFromDatabase);
+
+        if(statusFromActiveIndCheck != 200) {
+
+            return new ResponseEntity<String>(
+            adelThesisUtility.createResponseBody(
+                ErrorCodes.INVALID_ACTIVEIND_AT_LOGIN, "The user is not active", "LoginService"),
+            adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
+        }
+
         return new ResponseEntity<String>(
             adelThesisUtility.createLoginResponseBody(
-                ErrorCodes.SUCCESSFUL_LOGIN, "Registration was successful", "RegistrationService", profileFromDatabaseAsJSON),
+                ErrorCodes.SUCCESSFUL_LOGIN, "Registration was successful", "RegistrationService", profileFromDatabase),
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.OK);
     }
 

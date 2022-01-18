@@ -149,6 +149,6 @@ public class DaoOperations {
             e.printStackTrace();
         }
 
-        return new org.json.JSONObject();
+        return adelThesisUtility.getUserFromJSONArrayForLogin(profilesArrayFromFile, request);
     }
 }
