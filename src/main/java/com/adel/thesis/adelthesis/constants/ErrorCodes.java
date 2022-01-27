@@ -21,5 +21,6 @@ public final class ErrorCodes {
     public static final String INVALID_ACTIVEIND_AT_LOGIN = "4102";
     public static final String USER_IS_ALREADY_ACTIVE = "4200";
     public static final String USER_IS_ALREADY_REGISTERED = "4201";
+    public static final String INVALID_ACTIVATION_CODE_FOR_USER = "4204";
 
 }

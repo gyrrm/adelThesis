@@ -81,6 +81,16 @@ public class ActivationService {
             adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
+        int statusCodeOfActivationCodeCheckForUser = loginUtility.checkActivationCodeForUser(requestAsJson, profileFromDatabaseAsJSON);
+
+        if(statusCodeOfActivationCodeCheckForUser != 200) {
+
+            return new ResponseEntity<String>(
+            adelThesisUtility.createResponseBody(
+                ErrorCodes.INVALID_ACTIVATION_CODE_FOR_USER, "Activation code is invalid", "ActivationService"),
+            adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
+        }
+
         JSONObject activatedProfileAsJson = adelThesisUtility.modifyActiveInd(profileFromDatabaseAsJSON);
 
         daoOperations.writeToJsonAtActivation(adelThesisUtility.stringToJson(activatedProfileAsJson.toString()));

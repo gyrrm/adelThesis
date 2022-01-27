@@ -64,8 +64,6 @@ public class RegistrationService {
                 adelThesisUtility.createReponseHeaders(uuid, sourceapp), HttpStatus.BAD_REQUEST);
         }
 
-        System.out.println("HAHA" + daoOperations.readFromJsonForRegistration(registrationRequest).toString());
-
         if(!daoOperations.readFromJsonForRegistration(registrationRequest).toString().equals("{}")) {
             return new ResponseEntity<String>(
             adelThesisUtility.createResponseBody(ErrorCodes.USER_IS_ALREADY_REGISTERED, "Registration was not successful", "RegistrationService"),

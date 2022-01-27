@@ -33,6 +33,19 @@ public class LoginUtility {
         return statusCodeOfUsernameCheck;
     }
 
+    public int checkActivationCodeForUser(JSONObject request, JSONObject profileFromDatabase) {
+
+        int statusCodeOfActivationCodeCheck = 200;
+
+        if (!request.getJSONObject("security").getString("activationCode")
+                .equals(profileFromDatabase.getJSONObject("profile").getJSONObject("security").getString("activationCode"))) {
+
+                    statusCodeOfActivationCodeCheck = 500;
+                }
+
+        return statusCodeOfActivationCodeCheck;
+    }
+
     public int checkActiveInd(JSONObject profileFromDatabase) {
 
         int statusCodeOfActiveIndCheck = 200;
