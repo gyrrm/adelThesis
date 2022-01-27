@@ -28,7 +28,8 @@ public class SchemaValidationUtility {
                 }
             }
             if(body.getUserProfile().getUserSecurity() != null) {
-                if(body.getUserProfile().getUserSecurity().getActivationCode().isEmpty()) {
+                if(body.getUserProfile().getUserSecurity().getActivationCode().isEmpty() ||
+                   !body.getUserProfile().getUserSecurity().getActivationCode().equals("N")) {
                     statusOfSecurity = Integer.parseInt(ErrorCodes.INVALID_ACTIVATION_CODE_IN_SCHEMA);
                 } else {
                     if(body.getUserProfile().getUserSecurity().getActiveInd().isEmpty()) {
