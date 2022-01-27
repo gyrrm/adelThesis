@@ -24,11 +24,16 @@ public class LoginUtility {
 
         int statusCodeOfUsernameCheck = 200;
 
-        if (!request.getJSONObject("details").getString("username")
+        if ( profileFromDatabase.toString().equals("{}")) {
+            statusCodeOfUsernameCheck = 500;
+        } else {
+
+            if (!request.getJSONObject("details").getString("username")
                 .equals(profileFromDatabase.getJSONObject("profile").getJSONObject("details").getString("userName"))) {
 
                     statusCodeOfUsernameCheck = 500;
                 }
+        }
 
         return statusCodeOfUsernameCheck;
     }
