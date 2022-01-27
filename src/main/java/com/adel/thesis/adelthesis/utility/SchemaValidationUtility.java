@@ -28,11 +28,11 @@ public class SchemaValidationUtility {
                 }
             }
             if(body.getUserProfile().getUserSecurity() != null) {
-                if(body.getUserProfile().getUserSecurity().getActivationCode().isEmpty() ||
-                   !body.getUserProfile().getUserSecurity().getActivationCode().equals("N")) {
+                if(body.getUserProfile().getUserSecurity().getActivationCode().isEmpty()) {
                     statusOfSecurity = Integer.parseInt(ErrorCodes.INVALID_ACTIVATION_CODE_IN_SCHEMA);
                 } else {
-                    if(body.getUserProfile().getUserSecurity().getActiveInd().isEmpty()) {
+                    if(body.getUserProfile().getUserSecurity().getActiveInd().isEmpty() ||
+                      !body.getUserProfile().getUserSecurity().getActiveInd().equals("N")) {
                         statusOfSecurity = Integer.parseInt(ErrorCodes.INVALID_ACTIVEIND_IN_SCHEMA);
                     } else {
                         if(body.getUserProfile().getUserSecurity().getPassword().isEmpty()) {
